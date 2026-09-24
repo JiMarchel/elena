@@ -1,0 +1,165 @@
+export type Product = {
+  id: number
+  title: string
+  brand: string
+  volumeMl: number
+  notes: string
+  price: number
+  originalPrice?: number
+  rating: number
+  reviews: number
+  img: string
+}
+
+// Foto stok Unsplash (bebas pakai, hotlink diizinkan).
+export const imageUrl = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=600&q=80`
+
+const idr = new Intl.NumberFormat('id-ID', {
+  style: 'currency',
+  currency: 'IDR',
+  maximumFractionDigits: 0,
+})
+
+export const formatIDR = (value: number) => idr.format(value)
+
+export const products: Product[] = [
+  {
+    id: 1,
+    title: 'Noir Absolu',
+    brand: 'Enela Signature',
+    volumeMl: 50,
+    notes: 'Oud, Amber, Vanilla',
+    price: 485000,
+    originalPrice: 650000,
+    rating: 4.8,
+    reviews: 214,
+    img: '1587017539504-67cfbddac569',
+  },
+  {
+    id: 2,
+    title: 'Rose Éternelle',
+    brand: 'Maison Enela',
+    volumeMl: 30,
+    notes: 'Damask Rose, Peony, Musk',
+    price: 720000,
+    rating: 4.9,
+    reviews: 168,
+    img: '1594035910387-fea47794261f',
+  },
+  {
+    id: 3,
+    title: 'Citrus Verrine',
+    brand: 'Enela Fresh',
+    volumeMl: 100,
+    notes: 'Bergamot, Lemon, Neroli',
+    price: 315000,
+    originalPrice: 420000,
+    rating: 4.6,
+    reviews: 302,
+    img: '1523293182086-7651a899d37f',
+  },
+  {
+    id: 4,
+    title: 'Velvet Santal',
+    brand: 'Enela Signature',
+    volumeMl: 50,
+    notes: 'Sandalwood, Cedar, Tonka',
+    price: 890000,
+    rating: 4.7,
+    reviews: 96,
+    img: '1458538977777-0549b2370168',
+  },
+  {
+    id: 5,
+    title: 'Aqua Marine',
+    brand: 'Enela Sport',
+    volumeMl: 75,
+    notes: 'Sea Salt, Mint, Ambergris',
+    price: 275000,
+    originalPrice: 350000,
+    rating: 4.5,
+    reviews: 431,
+    img: '1622618991746-fe6004db3a47',
+  },
+  {
+    id: 6,
+    title: 'Jasmin Nocturne',
+    brand: 'Maison Enela',
+    volumeMl: 30,
+    notes: 'Jasmine, Tuberose, Benzoin',
+    price: 655000,
+    rating: 4.8,
+    reviews: 121,
+    img: '1547887537-6158d64c35b3',
+  },
+  {
+    id: 7,
+    title: 'Amber Nuit',
+    brand: 'Enela Signature',
+    volumeMl: 50,
+    notes: 'Amber, Saffron, Leather',
+    price: 1120000,
+    originalPrice: 1400000,
+    rating: 4.9,
+    reviews: 78,
+    img: '1590736704728-f4730bb30770',
+  },
+  {
+    id: 8,
+    title: 'Fleur Blanche',
+    brand: 'Enela Atelier',
+    volumeMl: 50,
+    notes: 'Orange Blossom, Iris, Cotton',
+    price: 540000,
+    rating: 4.6,
+    reviews: 189,
+    img: '1541643600914-78b084683601',
+  },
+  {
+    id: 9,
+    title: 'Vetiver Brut',
+    brand: 'Enela Homme',
+    volumeMl: 100,
+    notes: 'Vetiver, Grapefruit, Tobacco',
+    price: 615000,
+    originalPrice: 780000,
+    rating: 4.7,
+    reviews: 254,
+    img: '1588514912908-8f5891714f8d',
+  },
+  {
+    id: 10,
+    title: 'Vanille Poudrée',
+    brand: 'Enela Atelier',
+    volumeMl: 30,
+    notes: 'Vanilla, Coconut, Sandalwood',
+    price: 430000,
+    rating: 4.5,
+    reviews: 167,
+    img: '1615634260167-c8cdede054de',
+  },
+  {
+    id: 11,
+    title: 'Cuir de Russie',
+    brand: 'Enela Homme',
+    volumeMl: 50,
+    notes: 'Leather, Birch, Incense',
+    price: 985000,
+    rating: 4.8,
+    reviews: 64,
+    img: '1543422655-ac1c6ca993ed',
+  },
+  {
+    id: 12,
+    title: 'Lavande Champêtre',
+    brand: 'Enela Fresh',
+    volumeMl: 100,
+    notes: 'Lavender, Rosemary, Moss',
+    price: 265000,
+    originalPrice: 340000,
+    rating: 4.4,
+    reviews: 388,
+    img: '1610461888750-10bfc601b874',
+  },
+]
