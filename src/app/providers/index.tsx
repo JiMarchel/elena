@@ -1,11 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { SidebarProvider, TooltipProvider } from '@/shared/ui'
+import { TooltipProvider } from '@/shared/ui'
 
 export function AppProviders({ children }: { children: ReactNode }) {
-  return (
-    <TooltipProvider>
-      <SidebarProvider>{children}</SidebarProvider>
-    </TooltipProvider>
-  )
+  return <TooltipProvider>{children}</TooltipProvider>
 }

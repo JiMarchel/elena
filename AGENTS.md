@@ -39,6 +39,44 @@ Komponen masuk ke `src/shared/ui/`, lalu tambahkan re-export-nya di `src/shared/
 Antar-file di dalam `src/shared/ui/` saling import lewat path file (`@/shared/ui/button`),
 **jangan** lewat barrel — itu bikin circular import.
 
+### Block (`login-04`, `signup-04`, dst.)
+
+CLI menaruh file block di `aliases.components` = `src/shared/ui/`. Itu salah tempat untuk FSD:
+block adalah komposisi per-route, bukan UI kit. Alurnya:
+
+1. `add` block lewat CLI (jangan tulis ulang manual — SVG dan struktur gampang salah ketik).
+2. Pindahkan `<nama>-form.tsx` dari `src/shared/ui/` ke `src/pages/<slice>/ui/`, lalu tulis
+   sendiri file `ui/<slice>-page.tsx` + `index.ts` slice tersebut.
+3. Ganti import di dalamnya dari path file (`@/shared/ui/button`) ke barrel `@/shared/ui`,
+   karena file itu sekarang di layer `pages` dan harus lewat public API.
+
+Kalau `add` minta overwrite file hasil generate, jangan pakai `--overwrite`. Kembalikan dulu
+file itu ke bentuk asli registry supaya ke-skip.
+
+## Routing
+
+File di `src/routes/` hanya wrapper tipis. Route yang perlu shell marketplace (sidebar +
+navbar) diletakkan di bawah layout pathless `src/routes/_app.tsx`; route yang tampil layar
+penuh (mis. `login`, `register`) dibiarkan sebagai sibling langsung di `src/routes/` supaya
+tidak ikut shell.
+
+```
+src/routes/
+  __root.tsx          providers + CSS + devtools saja
+  _app.tsx            layout pathless: bungkus AppLayout (sidebar + SiteHeader)
+  _app.index.tsx      /          → DashboardPage
+  _auth.tsx           layout pathless: bungkus AuthLayout (navbar logo saja)
+  _auth.login.tsx     /login     → LoginPage
+  _auth.register.tsx  /register  → RegisterPage
+```
+
+`SidebarProvider` **hanya** boleh di `AppLayout`, bukan di `AppProviders`. Sebagai
+provider app-wide dia merender wrapper `display: flex`, sehingga halaman layar penuh
+seperti login jadi ikut jadi flex item dan kontennya mepet ke kiri, tidak center.
+
+Setelah menambah/mengubah file route, jalankan `bun run generate-routes` lalu cek
+`src/routeTree.gen.ts` untuk memastikan path-nya benar.
+
 ## SEO
 
 Domain produksi belum ada, jadi semua URL absolut memakai placeholder

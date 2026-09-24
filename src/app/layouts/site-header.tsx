@@ -1,3 +1,5 @@
+import { Link } from '@tanstack/react-router'
+
 import { ThemeToggle } from './theme-toggle'
 import { Button, SidebarTrigger } from '@/shared/ui'
 
@@ -8,8 +10,10 @@ export function SiteHeader() {
       <div className="flex-1" />
       <div className="flex items-center gap-2">
         <ThemeToggle />
-        <Button variant="outline">Login</Button>
-        <Button>Register</Button>
+        <Button variant="outline" render={<Link to="/login" />}>
+          Masuk
+        </Button>
+        <Button render={<Link to="/register" />}>Daftar</Button>
       </div>
     </header>
   )
