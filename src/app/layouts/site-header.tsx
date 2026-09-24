@@ -1,6 +1,5 @@
-import { ThemeToggle } from '@/components/theme-toggle'
-import { Button } from '@/components/ui/button'
-import { SidebarTrigger } from '@/components/ui/sidebar'
+import { ThemeToggle } from './theme-toggle'
+import { Button, SidebarTrigger } from '@/shared/ui'
 
 export function SiteHeader() {
   return (

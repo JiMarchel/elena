@@ -5,7 +5,6 @@ import {
   PackageIcon,
   SettingsIcon,
   ShoppingBagIcon,
-  SparklesIcon,
   StarIcon,
   TagsIcon,
   UsersIcon,
@@ -22,7 +21,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from '@/components/ui/sidebar'
+} from '@/shared/ui'
 
 const nav = [
   {
@@ -55,9 +54,11 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" render={<Link to="/" />}>
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <SparklesIcon />
-              </div>
+              <img
+                src="/enela.png"
+                alt=""
+                className="size-8 shrink-0 rounded-lg"
+              />
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">Enela</span>
                 <span className="truncate text-xs text-muted-foreground">

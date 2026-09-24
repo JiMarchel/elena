@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO(SEO): ganti ke domain produksi, samakan dengan index.html dan sitemap.xml
+Sitemap: https://enela.example/sitemap.xml

@@ -1,28 +1,10 @@
-export type Product = {
-  id: number
-  title: string
-  brand: string
-  volumeMl: number
-  notes: string
-  price: number
-  originalPrice?: number
-  rating: number
-  reviews: number
-  img: string
-}
+import type { Product } from '../model/product'
 
 // Foto stok Unsplash (bebas pakai, hotlink diizinkan).
-export const imageUrl = (id: string) =>
+const photo = (id: string) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=600&q=80`
 
-const idr = new Intl.NumberFormat('id-ID', {
-  style: 'currency',
-  currency: 'IDR',
-  maximumFractionDigits: 0,
-})
-
-export const formatIDR = (value: number) => idr.format(value)
-
+// ponytail: katalog masih dummy; ganti isi ini dengan request asli saat backend siap.
 export const products: Product[] = [
   {
     id: 1,
@@ -34,7 +16,7 @@ export const products: Product[] = [
     originalPrice: 650000,
     rating: 4.8,
     reviews: 214,
-    img: '1587017539504-67cfbddac569',
+    img: photo('1587017539504-67cfbddac569'),
   },
   {
     id: 2,
@@ -45,7 +27,7 @@ export const products: Product[] = [
     price: 720000,
     rating: 4.9,
     reviews: 168,
-    img: '1594035910387-fea47794261f',
+    img: photo('1594035910387-fea47794261f'),
   },
   {
     id: 3,
@@ -57,7 +39,7 @@ export const products: Product[] = [
     originalPrice: 420000,
     rating: 4.6,
     reviews: 302,
-    img: '1523293182086-7651a899d37f',
+    img: photo('1523293182086-7651a899d37f'),
   },
   {
     id: 4,
@@ -68,7 +50,7 @@ export const products: Product[] = [
     price: 890000,
     rating: 4.7,
     reviews: 96,
-    img: '1458538977777-0549b2370168',
+    img: photo('1458538977777-0549b2370168'),
   },
   {
     id: 5,
@@ -80,7 +62,7 @@ export const products: Product[] = [
     originalPrice: 350000,
     rating: 4.5,
     reviews: 431,
-    img: '1622618991746-fe6004db3a47',
+    img: photo('1622618991746-fe6004db3a47'),
   },
   {
     id: 6,
@@ -91,7 +73,7 @@ export const products: Product[] = [
     price: 655000,
     rating: 4.8,
     reviews: 121,
-    img: '1547887537-6158d64c35b3',
+    img: photo('1547887537-6158d64c35b3'),
   },
   {
     id: 7,
@@ -103,7 +85,7 @@ export const products: Product[] = [
     originalPrice: 1400000,
     rating: 4.9,
     reviews: 78,
-    img: '1590736704728-f4730bb30770',
+    img: photo('1590736704728-f4730bb30770'),
   },
   {
     id: 8,
@@ -114,7 +96,7 @@ export const products: Product[] = [
     price: 540000,
     rating: 4.6,
     reviews: 189,
-    img: '1541643600914-78b084683601',
+    img: photo('1541643600914-78b084683601'),
   },
   {
     id: 9,
@@ -126,7 +108,7 @@ export const products: Product[] = [
     originalPrice: 780000,
     rating: 4.7,
     reviews: 254,
-    img: '1588514912908-8f5891714f8d',
+    img: photo('1588514912908-8f5891714f8d'),
   },
   {
     id: 10,
@@ -137,7 +119,7 @@ export const products: Product[] = [
     price: 430000,
     rating: 4.5,
     reviews: 167,
-    img: '1615634260167-c8cdede054de',
+    img: photo('1615634260167-c8cdede054de'),
   },
   {
     id: 11,
@@ -148,7 +130,7 @@ export const products: Product[] = [
     price: 985000,
     rating: 4.8,
     reviews: 64,
-    img: '1543422655-ac1c6ca993ed',
+    img: photo('1543422655-ac1c6ca993ed'),
   },
   {
     id: 12,
@@ -160,6 +142,6 @@ export const products: Product[] = [
     originalPrice: 340000,
     rating: 4.4,
     reviews: 388,
-    img: '1610461888750-10bfc601b874',
+    img: photo('1610461888750-10bfc601b874'),
   },
 ]

@@ -1,9 +1,52 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>enela</title>
+
+    <!--
+      TODO(SEO): domain masih placeholder "https://enela.example".
+      Ganti di 3 file: index.html (canonical, og:url, og:image, twitter:image),
+      public/robots.txt (Sitemap), public/sitemap.xml (loc).
+    -->
+    <title>Enela — Marketplace Parfum Original</title>
+    <meta
+      name="description"
+      content="Enela adalah marketplace parfum yang menjual wewangian original: eau de parfum, eau de toilette, dan body mist dari brand lokal hingga internasional."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://enela.example/" />
+
+    <link rel="icon" type="image/png" href="/enela.png" />
+    <link rel="apple-touch-icon" href="/enela.png" />
+    <meta name="theme-color" content="#2A793F" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Enela" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:url" content="https://enela.example/" />
+    <meta property="og:title" content="Enela — Marketplace Parfum Original" />
+    <meta
+      property="og:description"
+      content="Jual wewangian original: eau de parfum, eau de toilette, dan body mist dari brand lokal hingga internasional."
+    />
+    <meta property="og:image" content="https://enela.example/enela.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="192" />
+    <meta property="og:image:height" content="192" />
+    <meta property="og:image:alt" content="Logo Enela" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Enela — Marketplace Parfum Original" />
+    <meta
+      name="twitter:description"
+      content="Jual wewangian original: eau de parfum, eau de toilette, dan body mist dari brand lokal hingga internasional."
+    />
+    <meta name="twitter:image" content="https://enela.example/enela.png" />
+
+    <!-- Foto produk dimuat dari Unsplash: preconnect supaya LCP lebih cepat. -->
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+
     <script>
       if (localStorage.getItem('theme') === 'dark')
         document.documentElement.classList.add('dark')
@@ -11,6 +54,6 @@
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/app/entrypoint.tsx"></script>
   </body>
 </html>
