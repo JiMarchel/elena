@@ -1,7 +1,8 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useRouterState } from '@tanstack/react-router'
 import {
   ChartBarIcon,
   LayoutDashboardIcon,
+  NetworkIcon,
   PackageIcon,
   SettingsIcon,
   ShoppingBagIcon,
@@ -42,12 +43,23 @@ const nav = [
     ],
   },
   {
+    label: 'Jaringan',
+    items: [{ title: 'Jaringan Saya', url: '/network', icon: NetworkIcon }],
+  },
+  {
     label: 'Lainnya',
     items: [{ title: 'Pengaturan', url: '#', icon: SettingsIcon }],
   },
 ]
 
+const routed = (url: string): url is '/' | '/network' =>
+  url === '/' || url === '/network'
+
 export function AppSidebar() {
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  })
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -79,10 +91,10 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       tooltip={item.title}
-                      isActive={item.url === '/'}
+                      isActive={pathname === item.url}
                       render={
-                        item.url === '/' ? (
-                          <Link to="/" />
+                        routed(item.url) ? (
+                          <Link to={item.url} />
                         ) : (
                           <a href={item.url} />
                         )
