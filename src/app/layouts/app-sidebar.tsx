@@ -55,6 +55,11 @@ const nav = [
 const routed = (url: string): url is '/' | '/network' =>
   url === '/' || url === '/network'
 
+const isNavActive = (pathname: string, url: string) => {
+  if (url === '/') return pathname === '/'
+  return pathname === url || pathname.startsWith(`${url}/`)
+}
+
 export function AppSidebar() {
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
@@ -91,7 +96,7 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       tooltip={item.title}
-                      isActive={pathname === item.url}
+                      isActive={isNavActive(pathname, item.url)}
                       render={
                         routed(item.url) ? (
                           <Link to={item.url} />

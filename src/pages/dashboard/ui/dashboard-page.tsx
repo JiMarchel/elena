@@ -1,20 +1,29 @@
-import { products } from '../api/catalog'
-import { ProductCard } from './product-card'
+import { SearchIcon } from 'lucide-react'
+
+import { products } from '@/entities/product'
+import { Input } from '@/shared/ui'
+
+import { demoWallet } from '../model/dashboard-wallet'
+import { ProductFeed } from './product-feed'
+import { ShortcutMenu } from './shortcut-menu'
+import { WalletStrip } from './wallet-strip'
 
 export function DashboardPage() {
   return (
-    <div className="flex flex-col gap-6 p-4">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-medium">Dashboard</h1>
-        <p className="text-muted-foreground">
-          {products.length} parfum tersedia di Enela
-        </p>
+    <div className="flex flex-col gap-4 p-4 md:gap-6">
+      <div className="relative">
+        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          type="search"
+          placeholder="Cari parfum, brand, atau notes…"
+          className="h-10 rounded-full bg-card pl-9"
+          aria-label="Cari produk"
+        />
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+
+      <WalletStrip wallet={demoWallet} />
+      <ShortcutMenu />
+      <ProductFeed products={products} />
     </div>
   )
 }
