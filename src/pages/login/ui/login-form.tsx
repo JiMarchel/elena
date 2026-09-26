@@ -1,6 +1,8 @@
-import { Link } from '@tanstack/react-router'
+import { useState } from 'react'
+import { Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { cn } from 'cn'
 
+import { useAuth } from '@/shared/auth'
 import {
   Button,
   Card,
@@ -17,14 +19,37 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
+  const navigate = useNavigate()
+  const { login } = useAuth()
+  const { redirect } = useSearch({ from: '/_auth/login' })
+  const [error, setError] = useState<string | null>(null)
+  const [pending, setPending] = useState(false)
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setError(null)
+    setPending(true)
+
+    const form = new FormData(event.currentTarget)
+    const email = String(form.get('email') ?? '')
+    const password = String(form.get('password') ?? '')
+
+    const ok = await login(email, password)
+    setPending(false)
+
+    if (!ok) {
+      setError('Email dan kata sandi wajib diisi.')
+      return
+    }
+
+    navigate({ to: redirect ?? '/' })
+  }
+
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form
-            className="p-6 md:p-8"
-            onSubmit={(event) => event.preventDefault()}
-          >
+          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Selamat datang kembali</h1>
@@ -36,6 +61,7 @@ export function LoginForm({
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="m@example.com"
                   required
@@ -51,10 +77,17 @@ export function LoginForm({
                     Lupa password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" name="password" type="password" required />
               </Field>
+              {error && (
+                <p className="text-sm text-destructive" role="alert">
+                  {error}
+                </p>
+              )}
               <Field>
-                <Button type="submit">Masuk</Button>
+                <Button type="submit" disabled={pending}>
+                  {pending ? 'Memproses…' : 'Masuk'}
+                </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Atau lanjut dengan

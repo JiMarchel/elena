@@ -12,10 +12,19 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppCartRouteImport } from './routes/_app.cart'
+import { Route as AppCheckoutRouteImport } from './routes/_app.checkout'
 import { Route as AppNetworkRouteImport } from './routes/_app.network'
+import { Route as AppOrdersRouteImport } from './routes/_app.orders'
+import { Route as AppVouchersRouteImport } from './routes/_app.vouchers'
 import { Route as AuthLoginRouteImport } from './routes/_auth.login'
 import { Route as AuthRegisterRouteImport } from './routes/_auth.register'
+import { Route as AppCheckoutIndexRouteImport } from './routes/_app.checkout.index'
+import { Route as AppCheckoutAddressesRouteImport } from './routes/_app.checkout.addresses'
 import { Route as AppProductsProductIdRouteImport } from './routes/_app.products.$productId'
+import { Route as AppCheckoutAddressesIndexRouteImport } from './routes/_app.checkout.addresses.index'
+import { Route as AppCheckoutAddressesLocationRouteImport } from './routes/_app.checkout.addresses.location'
+import { Route as AppCheckoutAddressesNewRouteImport } from './routes/_app.checkout.addresses.new'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -30,9 +39,29 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCartRoute = AppCartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCheckoutRoute = AppCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppNetworkRoute = AppNetworkRouteImport.update({
   id: '/network',
   path: '/network',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOrdersRoute = AppOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppVouchersRoute = AppVouchersRouteImport.update({
+  id: '/vouchers',
+  path: '/vouchers',
   getParentRoute: () => AppRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
@@ -45,50 +74,137 @@ const AuthRegisterRoute = AuthRegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => AuthRoute,
 } as any)
+const AppCheckoutIndexRoute = AppCheckoutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppCheckoutRoute,
+} as any)
+const AppCheckoutAddressesRoute = AppCheckoutAddressesRouteImport.update({
+  id: '/addresses',
+  path: '/addresses',
+  getParentRoute: () => AppCheckoutRoute,
+} as any)
 const AppProductsProductIdRoute = AppProductsProductIdRouteImport.update({
   id: '/products/$productId',
   path: '/products/$productId',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCheckoutAddressesIndexRoute =
+  AppCheckoutAddressesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AppCheckoutAddressesRoute,
+  } as any)
+const AppCheckoutAddressesLocationRoute =
+  AppCheckoutAddressesLocationRouteImport.update({
+    id: '/location',
+    path: '/location',
+    getParentRoute: () => AppCheckoutAddressesRoute,
+  } as any)
+const AppCheckoutAddressesNewRoute = AppCheckoutAddressesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AppCheckoutAddressesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/cart': typeof AppCartRoute
+  '/checkout': typeof AppCheckoutRouteWithChildren
   '/network': typeof AppNetworkRoute
+  '/orders': typeof AppOrdersRoute
+  '/vouchers': typeof AppVouchersRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/checkout/addresses': typeof AppCheckoutAddressesRouteWithChildren
   '/products/$productId': typeof AppProductsProductIdRoute
+  '/checkout/': typeof AppCheckoutIndexRoute
+  '/checkout/addresses/location': typeof AppCheckoutAddressesLocationRoute
+  '/checkout/addresses/new': typeof AppCheckoutAddressesNewRoute
+  '/checkout/addresses/': typeof AppCheckoutAddressesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
+  '/cart': typeof AppCartRoute
   '/network': typeof AppNetworkRoute
+  '/orders': typeof AppOrdersRoute
+  '/vouchers': typeof AppVouchersRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/products/$productId': typeof AppProductsProductIdRoute
+  '/checkout': typeof AppCheckoutIndexRoute
+  '/checkout/addresses/location': typeof AppCheckoutAddressesLocationRoute
+  '/checkout/addresses/new': typeof AppCheckoutAddressesNewRoute
+  '/checkout/addresses': typeof AppCheckoutAddressesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
+  '/_app/cart': typeof AppCartRoute
+  '/_app/checkout': typeof AppCheckoutRouteWithChildren
   '/_app/network': typeof AppNetworkRoute
+  '/_app/orders': typeof AppOrdersRoute
+  '/_app/vouchers': typeof AppVouchersRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/checkout/addresses': typeof AppCheckoutAddressesRouteWithChildren
   '/_app/products/$productId': typeof AppProductsProductIdRoute
+  '/_app/checkout/': typeof AppCheckoutIndexRoute
+  '/_app/checkout/addresses/location': typeof AppCheckoutAddressesLocationRoute
+  '/_app/checkout/addresses/new': typeof AppCheckoutAddressesNewRoute
+  '/_app/checkout/addresses/': typeof AppCheckoutAddressesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/network' | '/login' | '/register' | '/products/$productId'
+  fullPaths:
+    | '/'
+    | '/cart'
+    | '/checkout'
+    | '/network'
+    | '/orders'
+    | '/vouchers'
+    | '/login'
+    | '/register'
+    | '/checkout/addresses'
+    | '/products/$productId'
+    | '/checkout/'
+    | '/checkout/addresses/location'
+    | '/checkout/addresses/new'
+    | '/checkout/addresses/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/network' | '/login' | '/register' | '/products/$productId'
+  to:
+    | '/'
+    | '/cart'
+    | '/network'
+    | '/orders'
+    | '/vouchers'
+    | '/login'
+    | '/register'
+    | '/products/$productId'
+    | '/checkout'
+    | '/checkout/addresses/location'
+    | '/checkout/addresses/new'
+    | '/checkout/addresses'
   id:
     | '__root__'
     | '/_app'
     | '/_auth'
+    | '/_app/cart'
+    | '/_app/checkout'
     | '/_app/network'
+    | '/_app/orders'
+    | '/_app/vouchers'
     | '/_auth/login'
     | '/_auth/register'
     | '/_app/'
+    | '/_app/checkout/addresses'
     | '/_app/products/$productId'
+    | '/_app/checkout/'
+    | '/_app/checkout/addresses/location'
+    | '/_app/checkout/addresses/new'
+    | '/_app/checkout/addresses/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,11 +235,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/cart': {
+      id: '/_app/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof AppCartRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/checkout': {
+      id: '/_app/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof AppCheckoutRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/network': {
       id: '/_app/network'
       path: '/network'
       fullPath: '/network'
       preLoaderRoute: typeof AppNetworkRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/orders': {
+      id: '/_app/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof AppOrdersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/vouchers': {
+      id: '/_app/vouchers'
+      path: '/vouchers'
+      fullPath: '/vouchers'
+      preLoaderRoute: typeof AppVouchersRouteImport
       parentRoute: typeof AppRoute
     }
     '/_auth/login': {
@@ -140,6 +284,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_app/checkout/': {
+      id: '/_app/checkout/'
+      path: '/'
+      fullPath: '/checkout/'
+      preLoaderRoute: typeof AppCheckoutIndexRouteImport
+      parentRoute: typeof AppCheckoutRoute
+    }
+    '/_app/checkout/addresses': {
+      id: '/_app/checkout/addresses'
+      path: '/addresses'
+      fullPath: '/checkout/addresses'
+      preLoaderRoute: typeof AppCheckoutAddressesRouteImport
+      parentRoute: typeof AppCheckoutRoute
+    }
     '/_app/products/$productId': {
       id: '/_app/products/$productId'
       path: '/products/$productId'
@@ -147,17 +305,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProductsProductIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/checkout/addresses/': {
+      id: '/_app/checkout/addresses/'
+      path: '/'
+      fullPath: '/checkout/addresses/'
+      preLoaderRoute: typeof AppCheckoutAddressesIndexRouteImport
+      parentRoute: typeof AppCheckoutAddressesRoute
+    }
+    '/_app/checkout/addresses/location': {
+      id: '/_app/checkout/addresses/location'
+      path: '/location'
+      fullPath: '/checkout/addresses/location'
+      preLoaderRoute: typeof AppCheckoutAddressesLocationRouteImport
+      parentRoute: typeof AppCheckoutAddressesRoute
+    }
+    '/_app/checkout/addresses/new': {
+      id: '/_app/checkout/addresses/new'
+      path: '/new'
+      fullPath: '/checkout/addresses/new'
+      preLoaderRoute: typeof AppCheckoutAddressesNewRouteImport
+      parentRoute: typeof AppCheckoutAddressesRoute
+    }
   }
 }
 
+interface AppCheckoutAddressesRouteChildren {
+  AppCheckoutAddressesLocationRoute: typeof AppCheckoutAddressesLocationRoute
+  AppCheckoutAddressesNewRoute: typeof AppCheckoutAddressesNewRoute
+  AppCheckoutAddressesIndexRoute: typeof AppCheckoutAddressesIndexRoute
+}
+
+const AppCheckoutAddressesRouteChildren: AppCheckoutAddressesRouteChildren = {
+  AppCheckoutAddressesLocationRoute: AppCheckoutAddressesLocationRoute,
+  AppCheckoutAddressesNewRoute: AppCheckoutAddressesNewRoute,
+  AppCheckoutAddressesIndexRoute: AppCheckoutAddressesIndexRoute,
+}
+
+const AppCheckoutAddressesRouteWithChildren =
+  AppCheckoutAddressesRoute._addFileChildren(AppCheckoutAddressesRouteChildren)
+
+interface AppCheckoutRouteChildren {
+  AppCheckoutAddressesRoute: typeof AppCheckoutAddressesRouteWithChildren
+  AppCheckoutIndexRoute: typeof AppCheckoutIndexRoute
+}
+
+const AppCheckoutRouteChildren: AppCheckoutRouteChildren = {
+  AppCheckoutAddressesRoute: AppCheckoutAddressesRouteWithChildren,
+  AppCheckoutIndexRoute: AppCheckoutIndexRoute,
+}
+
+const AppCheckoutRouteWithChildren = AppCheckoutRoute._addFileChildren(
+  AppCheckoutRouteChildren,
+)
+
 interface AppRouteChildren {
+  AppCartRoute: typeof AppCartRoute
+  AppCheckoutRoute: typeof AppCheckoutRouteWithChildren
   AppNetworkRoute: typeof AppNetworkRoute
+  AppOrdersRoute: typeof AppOrdersRoute
+  AppVouchersRoute: typeof AppVouchersRoute
   AppIndexRoute: typeof AppIndexRoute
   AppProductsProductIdRoute: typeof AppProductsProductIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCartRoute: AppCartRoute,
+  AppCheckoutRoute: AppCheckoutRouteWithChildren,
   AppNetworkRoute: AppNetworkRoute,
+  AppOrdersRoute: AppOrdersRoute,
+  AppVouchersRoute: AppVouchersRoute,
   AppIndexRoute: AppIndexRoute,
   AppProductsProductIdRoute: AppProductsProductIdRoute,
 }

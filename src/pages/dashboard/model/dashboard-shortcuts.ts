@@ -70,14 +70,14 @@ export const dashboardShortcuts: DashboardShortcut[] = [
     title: 'Pesanan',
     description: 'Status belanja',
     icon: ShoppingBagIcon,
-    url: '#',
+    url: '/orders',
   },
   {
     id: 'voucher',
     title: 'Voucher',
     description: 'Promo aktif',
     icon: TicketIcon,
-    url: '#',
+    url: '/vouchers',
   },
   {
     id: 'rewards',

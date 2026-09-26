@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { ArrowUpIcon, LocateFixedIcon, SearchIcon } from 'lucide-react'
 
+import { RequireAuth } from '@/shared/auth'
 import {
   Button,
   Input,
@@ -26,6 +27,17 @@ import { NetworkTreeView } from './network-tree-view'
 const VIEW_DEPTH = 2
 
 export function NetworkPage() {
+  return (
+    <RequireAuth
+      title="Masuk untuk melihat jaringan"
+      description="Data downline dan referral hanya tersedia setelah Anda masuk."
+    >
+      <NetworkPageContent />
+    </RequireAuth>
+  )
+}
+
+function NetworkPageContent() {
   const navigate = useNavigate()
   const { rootId } = useSearch({ from: '/_app/network' })
   const [jumpQuery, setJumpQuery] = useState('')

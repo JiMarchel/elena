@@ -3,11 +3,11 @@ import {
   ChartBarIcon,
   LayoutDashboardIcon,
   NetworkIcon,
-  PackageIcon,
   SettingsIcon,
   ShoppingBagIcon,
+  ShoppingCartIcon,
   StarIcon,
-  TagsIcon,
+  TicketIcon,
   UsersIcon,
 } from 'lucide-react'
 
@@ -29,15 +29,15 @@ const nav = [
     label: 'Katalog',
     items: [
       { title: 'Dashboard', url: '/', icon: LayoutDashboardIcon },
-      { title: 'Produk', url: '#', icon: PackageIcon },
-      { title: 'Kategori', url: '#', icon: TagsIcon },
+      { title: 'Keranjang Saya', url: '/cart', icon: ShoppingCartIcon },
+      { title: 'Voucher Saya', url: '/vouchers', icon: TicketIcon },
+      { title: 'Pesanan Saya', url: '/orders', icon: ShoppingBagIcon },
       { title: 'Ulasan', url: '#', icon: StarIcon },
     ],
   },
   {
     label: 'Penjualan',
     items: [
-      { title: 'Pesanan', url: '#', icon: ShoppingBagIcon },
       { title: 'Pelanggan', url: '#', icon: UsersIcon },
       { title: 'Analitik', url: '#', icon: ChartBarIcon },
     ],
@@ -52,8 +52,14 @@ const nav = [
   },
 ]
 
-const routed = (url: string): url is '/' | '/network' =>
-  url === '/' || url === '/network'
+const routed = (
+  url: string,
+): url is '/' | '/network' | '/cart' | '/vouchers' | '/orders' =>
+  url === '/' ||
+  url === '/network' ||
+  url === '/cart' ||
+  url === '/vouchers' ||
+  url === '/orders'
 
 const isNavActive = (pathname: string, url: string) => {
   if (url === '/') return pathname === '/'
