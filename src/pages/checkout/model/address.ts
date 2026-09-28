@@ -49,19 +49,42 @@ export type CheckoutFlowSearch = {
   quantity?: number
 }
 
-export type AddressListSearch = CheckoutFlowSearch
+export type AddressFlowOrigin = 'checkout' | 'settings'
 
-export type AddressFormSearch = CheckoutFlowSearch & {
+export type AddressFlowSearch = CheckoutFlowSearch & {
+  from?: AddressFlowOrigin
+}
+
+export type AddressListSearch = AddressFlowSearch
+
+export type AddressFormSearch = AddressFlowSearch & {
   addressId?: string
 }
 
 export type LocationStep = 'province' | 'city' | 'district'
 
-export type LocationSearch = CheckoutFlowSearch & {
+export type LocationSearch = AddressFlowSearch & {
   step?: LocationStep
   province?: string
   city?: string
   addressId?: string
+}
+
+function parseAddressFlowOrigin(
+  search: Record<string, unknown>,
+): AddressFlowOrigin | undefined {
+  return search.from === 'settings' ? 'settings' : undefined
+}
+
+function withAddressFlowOrigin(
+  search: Record<string, unknown>,
+  flow: CheckoutFlowSearch,
+): AddressFlowSearch {
+  const from = parseAddressFlowOrigin(search)
+  return {
+    ...flow,
+    ...(from ? { from } : {}),
+  }
 }
 
 export function validateCheckoutFlowSearch(
@@ -88,13 +111,13 @@ export function validateCheckoutFlowSearch(
 export function validateAddressListSearch(
   search: Record<string, unknown>,
 ): AddressListSearch {
-  return validateCheckoutFlowSearch(search)
+  return withAddressFlowOrigin(search, validateCheckoutFlowSearch(search))
 }
 
 export function validateAddressFormSearch(
   search: Record<string, unknown>,
 ): AddressFormSearch {
-  const flow = validateCheckoutFlowSearch(search)
+  const flow = withAddressFlowOrigin(search, validateCheckoutFlowSearch(search))
   const addressId =
     typeof search.addressId === 'string' ? search.addressId : undefined
 
@@ -109,7 +132,7 @@ const locationSteps: LocationStep[] = ['province', 'city', 'district']
 export function validateLocationSearch(
   search: Record<string, unknown>,
 ): LocationSearch {
-  const flow = validateCheckoutFlowSearch(search)
+  const flow = withAddressFlowOrigin(search, validateCheckoutFlowSearch(search))
   const step = search.step
   const province =
     typeof search.province === 'string' ? search.province : undefined
@@ -323,5 +346,27 @@ export function checkoutFlowSearch(search: CheckoutFlowSearch) {
   return {
     ...(search.productId ? { productId: search.productId } : {}),
     ...(search.quantity ? { quantity: search.quantity } : {}),
+  }
+}
+
+export function addressFlowSearch(search: AddressFlowSearch): AddressFlowSearch {
+  return {
+    ...checkoutFlowSearch(search),
+    ...(search.from === 'settings' ? { from: 'settings' as const } : {}),
+  }
+}
+
+export function isSettingsAddressFlow(search: AddressFlowSearch) {
+  return search.from === 'settings'
+}
+
+export function getAddressBackTarget(search: AddressFlowSearch) {
+  return isSettingsAddressFlow(search) ? '/settings' : '/checkout'
+}
+
+export function getAddressListTarget(search: AddressFlowSearch) {
+  return {
+    to: '/checkout/addresses' as const,
+    search: addressFlowSearch(search),
   }
 }

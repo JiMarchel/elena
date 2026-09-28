@@ -6,7 +6,7 @@ import { RequireAuth } from '@/shared/auth'
 import { Button, Input } from '@/shared/ui'
 
 import {
-  checkoutFlowSearch,
+  addressFlowSearch,
   validateLocationSearch,
 } from '../model/address'
 import type { LocationStep } from '../model/address'
@@ -34,7 +34,7 @@ function AddressLocationPageContent() {
   const navigate = useNavigate()
   const rawSearch = useSearch({ from: '/_app/checkout/addresses/location' })
   const search = validateLocationSearch(rawSearch)
-  const checkoutSearch = checkoutFlowSearch(search)
+  const addressSearch = addressFlowSearch(search)
   const step: LocationStep = search.step ?? 'province'
   const [query, setQuery] = useState('')
 
@@ -80,7 +80,7 @@ function AddressLocationPageContent() {
   const backSearch = () => {
     if (step === 'district') {
       return {
-        ...checkoutSearch,
+        ...addressSearch,
         ...(search.addressId ? { addressId: search.addressId } : {}),
         step: 'city' as const,
         province: search.province,
@@ -89,14 +89,14 @@ function AddressLocationPageContent() {
 
     if (step === 'city') {
       return {
-        ...checkoutSearch,
+        ...addressSearch,
         ...(search.addressId ? { addressId: search.addressId } : {}),
         step: 'province' as const,
       }
     }
 
     return {
-      ...checkoutSearch,
+      ...addressSearch,
       ...(search.addressId ? { addressId: search.addressId } : {}),
     }
   }
@@ -110,7 +110,7 @@ function AddressLocationPageContent() {
     navigate({
       to: '/checkout/addresses/location',
       search: {
-        ...checkoutSearch,
+        ...addressSearch,
         ...(search.addressId ? { addressId: search.addressId } : {}),
         step: 'city',
         province,
@@ -123,7 +123,7 @@ function AddressLocationPageContent() {
     navigate({
       to: '/checkout/addresses/location',
       search: {
-        ...checkoutSearch,
+        ...addressSearch,
         ...(search.addressId ? { addressId: search.addressId } : {}),
         step: 'district',
         province: search.province,
@@ -155,7 +155,7 @@ function AddressLocationPageContent() {
     navigate({
       to: '/checkout/addresses/new',
       search: {
-        ...checkoutSearch,
+        ...addressSearch,
         ...(search.addressId ? { addressId: search.addressId } : {}),
       },
     })

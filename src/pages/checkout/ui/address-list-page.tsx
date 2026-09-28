@@ -6,13 +6,15 @@ import { RequireAuth } from '@/shared/auth'
 import { Badge, Button } from '@/shared/ui'
 
 import {
-  checkoutFlowSearch,
+  addressFlowSearch,
   ensureSavedAddresses,
+  getAddressBackTarget,
   getSelectedAddress,
+  isSettingsAddressFlow,
   setSelectedAddress,
 } from '../model/address'
+import type { AddressFlowSearch, SavedAddress } from '../model/address'
 import { writeFormDraft } from '../model/address-storage'
-import type { SavedAddress } from '../model/address'
 
 export function AddressListPage() {
   return (
@@ -28,7 +30,9 @@ export function AddressListPage() {
 function AddressListPageContent() {
   const navigate = useNavigate()
   const flowSearch = useSearch({ from: '/_app/checkout/addresses/' })
-  const checkoutSearch = checkoutFlowSearch(flowSearch)
+  const addressSearch = addressFlowSearch(flowSearch)
+  const fromSettings = isSettingsAddressFlow(flowSearch)
+  const backTarget = getAddressBackTarget(flowSearch)
 
   const [addresses] = useState<SavedAddress[]>(() => ensureSavedAddresses())
   const [selectedId, setSelectedId] = useState(() => getSelectedAddress().id)
@@ -36,7 +40,10 @@ function AddressListPageContent() {
   const handleSelect = (addressId: string) => {
     setSelectedId(addressId)
     setSelectedAddress(addressId)
-    navigate({ to: '/checkout', search: checkoutSearch })
+
+    if (fromSettings) return
+
+    navigate({ to: '/checkout', search: addressFlowSearch(flowSearch) })
   }
 
   return (
@@ -46,13 +53,22 @@ function AddressListPageContent() {
           variant="ghost"
           size="icon-sm"
           className="-ml-1 shrink-0"
-          render={<Link to="/checkout" search={checkoutSearch} />}
+          render={
+            <Link
+              to={backTarget}
+              search={
+                backTarget === '/checkout'
+                  ? addressFlowSearch(flowSearch)
+                  : undefined
+              }
+            />
+          }
           aria-label="Kembali"
         >
           <ArrowLeftIcon />
         </Button>
         <h1 className="min-w-0 flex-1 text-base font-medium sm:text-lg">
-          Pilih Alamat
+          {fromSettings ? 'Alamat Saya' : 'Pilih Alamat'}
         </h1>
       </header>
 
@@ -69,7 +85,7 @@ function AddressListPageContent() {
                 selected={selectedId === address.id}
                 onSelect={() => handleSelect(address.id)}
                 editSearch={{
-                  ...checkoutSearch,
+                  ...addressSearch,
                   addressId: address.id,
                 }}
               />
@@ -85,7 +101,7 @@ function AddressListPageContent() {
           className="w-full border-primary text-primary hover:bg-primary/5"
           onClick={() => writeFormDraft(null)}
           render={
-            <Link to="/checkout/addresses/new" search={checkoutSearch} />
+            <Link to="/checkout/addresses/new" search={addressSearch} />
           }
         >
           <PlusIcon data-icon="inline-start" />
@@ -105,7 +121,7 @@ function AddressListItem({
   address: SavedAddress
   selected: boolean
   onSelect: () => void
-  editSearch: { productId?: string; quantity?: number; addressId: string }
+  editSearch: AddressFlowSearch & { addressId: string }
 }) {
   return (
     <div className="flex gap-3 px-3 py-4 sm:px-4">

@@ -1,10 +1,14 @@
 import { useMemo, useState } from 'react'
-import { ChevronRightIcon } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
+import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react'
 
 import { formatIDR } from '@/shared/lib'
 import { Badge, Checkbox, Separator, Switch } from '@/shared/ui'
 
+import type { CheckoutFlowSearch } from '../model/address'
+import { checkoutFlowSearch } from '../model/address'
 import type { CheckoutStoreGroup, ShippingOption } from '../model/checkout'
+import { formatPlatformSaving } from '../model/platform-voucher'
 import { formatStoreVoucherSaving } from '../model/store-voucher'
 import type { SelectedStoreVoucher } from '../model/store-voucher'
 import { CheckoutShippingOptions } from './checkout-shipping-options'
@@ -22,6 +26,8 @@ export function CheckoutStoreSection({
   claimedVoucherIds,
   onVoucherChange,
   onVoucherClaim,
+  storeMessage,
+  onStoreMessageChange,
 }: {
   group: CheckoutStoreGroup
   shippingOptions: ShippingOption[]
@@ -34,8 +40,11 @@ export function CheckoutStoreSection({
   claimedVoucherIds: Set<string>
   onVoucherChange: (selection: SelectedStoreVoucher) => void
   onVoucherClaim: (voucherId: string) => void
+  storeMessage: string
+  onStoreMessageChange: (message: string) => void
 }) {
   const [voucherOpen, setVoucherOpen] = useState(false)
+  const [messageOpen, setMessageOpen] = useState(false)
 
   const itemCount = group.items.reduce((sum, item) => sum + item.quantity, 0)
   const orderSubtotal = useMemo(
@@ -146,14 +155,49 @@ export function CheckoutStoreSection({
 
         <button
           type="button"
-          className="flex w-full items-center justify-between gap-2 px-3 py-3 text-left text-sm sm:px-4"
+          onClick={() => setMessageOpen(!messageOpen)}
+          className="flex w-full items-center justify-between gap-2 px-3 py-3 text-left text-sm sm:px-4 hover:bg-muted/50 transition-colors"
         >
           <span className="text-muted-foreground">Pesan untuk Penjual</span>
-          <span className="flex items-center gap-1 text-muted-foreground">
-            Tinggalkan pesan
-            <ChevronRightIcon className="size-4" />
+          <span className="flex items-center gap-1">
+            {storeMessage ? (
+              <span className="line-clamp-1 max-w-xs text-xs text-foreground">
+                {storeMessage}
+              </span>
+            ) : (
+              <span className="text-muted-foreground">Tinggalkan pesan</span>
+            )}
+            <ChevronDownIcon
+              className={`size-4 text-muted-foreground transition-transform ${messageOpen ? 'rotate-180' : ''}`}
+            />
           </span>
         </button>
+
+        {messageOpen && (
+          <>
+            <Separator />
+            <div className="px-3 py-3 sm:px-4">
+              <textarea
+                value={storeMessage}
+                onChange={(e) => onStoreMessageChange(e.target.value.slice(0, 200))}
+                placeholder="Tinggalkan pesan untuk penjual (max 200 karakter)"
+                className="min-h-20 w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              />
+              <div className="mt-2 flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">
+                  {storeMessage.length}/200
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setMessageOpen(false)}
+                  className="text-xs px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                >
+                  Selesai
+                </button>
+              </div>
+            </div>
+          </>
+        )}
 
         <Separator />
 
@@ -190,32 +234,52 @@ export function CheckoutStoreSection({
 }
 
 export function CheckoutRewardsRow({
+  flowSearch,
+  platformDiscount,
+  hasFreeShipping,
   useCoins,
   onUseCoinsChange,
 }: {
+  flowSearch: CheckoutFlowSearch
+  platformDiscount: number
+  hasFreeShipping: boolean
   useCoins: boolean
   onUseCoinsChange: (checked: boolean) => void
 }) {
+  const voucherSearch = checkoutFlowSearch(flowSearch)
+  const hasSelection = platformDiscount > 0 || hasFreeShipping
+
   return (
     <section className="divide-y bg-card ring-1 ring-foreground/10 lg:rounded-xl">
-      <button
-        type="button"
-        className="flex w-full items-center justify-between gap-2 px-3 py-3 text-left text-sm sm:px-4"
+      <Link
+        to="/checkout/vouchers"
+        search={voucherSearch}
+        className="flex w-full items-center justify-between gap-2 px-3 py-3 text-left text-sm transition-colors hover:bg-muted/50 sm:px-4"
       >
         <span className="font-medium">EnelaVIP Voucher</span>
         <span className="flex items-center gap-1.5">
-          <Badge variant="outline" className="border-primary text-primary">
-            -Rp12,213RB
-          </Badge>
-          <Badge
-            variant="outline"
-            className="border-emerald-500 text-emerald-600"
-          >
-            Gratis Ongkir
-          </Badge>
+          {hasSelection ? (
+            <>
+              {platformDiscount > 0 && (
+                <Badge variant="outline" className="border-primary text-primary">
+                  {formatPlatformSaving(platformDiscount)}
+                </Badge>
+              )}
+              {hasFreeShipping && (
+                <Badge
+                  variant="outline"
+                  className="border-emerald-500 text-emerald-600"
+                >
+                  Gratis Ongkir
+                </Badge>
+              )}
+            </>
+          ) : (
+            <span className="text-muted-foreground">Pilih voucher</span>
+          )}
           <ChevronRightIcon className="size-4 text-muted-foreground" />
         </span>
-      </button>
+      </Link>
       <div className="flex items-center justify-between gap-3 px-3 py-3 sm:px-4">
         <span className="text-sm">Tukarkan 30 Koin Enela</span>
         <Switch

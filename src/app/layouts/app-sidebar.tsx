@@ -48,18 +48,25 @@ const nav = [
   },
   {
     label: 'Lainnya',
-    items: [{ title: 'Pengaturan', url: '#', icon: SettingsIcon }],
+    items: [{ title: 'Pengaturan', url: '/settings', icon: SettingsIcon }],
   },
 ]
 
 const routed = (
   url: string,
-): url is '/' | '/network' | '/cart' | '/vouchers' | '/orders' =>
+): url is
+  | '/'
+  | '/network'
+  | '/cart'
+  | '/vouchers'
+  | '/orders'
+  | '/settings' =>
   url === '/' ||
   url === '/network' ||
   url === '/cart' ||
   url === '/vouchers' ||
-  url === '/orders'
+  url === '/orders' ||
+  url === '/settings'
 
 const isNavActive = (pathname: string, url: string) => {
   if (url === '/') return pathname === '/'

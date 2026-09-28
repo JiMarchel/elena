@@ -7,18 +7,25 @@ import { Button } from '@/shared/ui'
 
 import {
   buildCheckoutFromProduct,
+  calcOrderSubtotal,
   calcPaymentBreakdown,
   countCheckoutItems,
   getDemoCheckoutGroups,
   getPaymentMethods,
   getShippingOptions,
 } from '../model/checkout'
+import {
+  calcPlatformSelectionBenefits,
+  resolvePlatformSelection,
+} from '../model/platform-voucher'
 import { getSelectedAddress, toShippingAddress } from '../model/address'
 import {
   getRecommendedStoreVoucher,
 } from '../model/store-voucher'
 import type { SelectedStoreVoucher } from '../model/store-voucher'
+import { placeCheckoutOrder } from '../model/place-order'
 import { CheckoutAddress } from './checkout-address'
+import { CheckoutConfirmSheet } from './checkout-confirm-sheet'
 import { CheckoutFooterBar } from './checkout-footer-bar'
 import { CheckoutPaymentDetails, CheckoutTerms } from './checkout-payment-details'
 import { CheckoutPaymentMethods } from './checkout-payment-methods'
@@ -48,6 +55,8 @@ function CheckoutPageContent() {
   const [useProtection, setUseProtection] = useState(true)
   const [useCoins, setUseCoins] = useState(false)
   const [dropshipper, setDropshipper] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false)
 
   const address = toShippingAddress(getSelectedAddress())
   const flowSearch = { productId, quantity }
@@ -77,6 +86,8 @@ function CheckoutPageContent() {
   const [claimedVouchers, setClaimedVouchers] = useState<
     Record<string, Set<string>>
   >({})
+
+  const [storeMessages, setStoreMessages] = useState<Record<string, string>>({})
 
   const getClaimedIds = useCallback(
     (storeId: string) => claimedVouchers[storeId] ?? new Set<string>(),
@@ -108,18 +119,65 @@ function CheckoutPageContent() {
     shippingOptions[0]
 
   const itemCount = countCheckoutItems(groups)
+  const orderSubtotal = useMemo(() => calcOrderSubtotal(groups), [groups])
+
+  const platformSelection = useMemo(
+    () => resolvePlatformSelection(orderSubtotal),
+    [orderSubtotal],
+  )
+
+  const platformBenefits = useMemo(
+    () =>
+      calcPlatformSelectionBenefits(
+        platformSelection,
+        orderSubtotal,
+        selectedShipping.fee,
+      ),
+    [platformSelection, orderSubtotal, selectedShipping.fee],
+  )
 
   const breakdown = calcPaymentBreakdown({
     groups,
     shippingFee: selectedShipping.fee,
     useProtection,
     useCoins,
-    usePlatformVoucher: true,
     storeVoucherDiscount: totalStoreVoucherDiscount,
+    platformShippingDiscount: platformBenefits.shippingDiscount,
+    platformDiscountAmount: platformBenefits.discountAmount,
   })
 
+  const selectedMethod =
+    paymentMethods.find((method) => method.id === selectedMethodId) ??
+    paymentMethods[0]
+
   const handlePlaceOrder = () => {
-    navigate({ to: '/orders', search: { status: 'unpaid' } })
+    setConfirmOpen(true)
+  }
+
+  const handleConfirmOrder = async () => {
+    setIsPlacingOrder(true)
+
+    try {
+      const result = await placeCheckoutOrder({
+        total: breakdown.total,
+        itemCount,
+      })
+
+      setConfirmOpen(false)
+      navigate({
+        to: '/checkout/result',
+        search: {
+          status: result.success ? 'success' : 'failed',
+          ...(result.success
+            ? { orderNo: result.orderNo, total: breakdown.total }
+            : { message: result.message }),
+          ...(productId ? { productId } : {}),
+          ...(quantity ? { quantity } : {}),
+        },
+      })
+    } finally {
+      setIsPlacingOrder(false)
+    }
   }
 
   return (
@@ -184,11 +242,21 @@ function CheckoutPageContent() {
                 onVoucherClaim={(voucherId) =>
                   handleVoucherClaim(group.storeId, voucherId)
                 }
+                storeMessage={storeMessages[group.storeId] ?? ''}
+                onStoreMessageChange={(message) =>
+                  setStoreMessages((prev) => ({
+                    ...prev,
+                    [group.storeId]: message,
+                  }))
+                }
               />
             )
           })}
 
           <CheckoutRewardsRow
+            flowSearch={flowSearch}
+            platformDiscount={platformBenefits.discountAmount}
+            hasFreeShipping={platformBenefits.hasShippingVoucher}
             useCoins={useCoins}
             onUseCoinsChange={setUseCoins}
           />
@@ -251,6 +319,19 @@ function CheckoutPageContent() {
         {itemCount} produk · estimasi tiba{' '}
         {selectedShipping.estimate.toLowerCase()}
       </p>
+
+      <CheckoutConfirmSheet
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        address={address}
+        breakdown={breakdown}
+        itemCount={itemCount}
+        shippingLabel={selectedShipping.label}
+        shippingEstimate={selectedShipping.estimate}
+        paymentLabel={selectedMethod.label}
+        isSubmitting={isPlacingOrder}
+        onConfirm={handleConfirmOrder}
+      />
     </div>
   )
 }

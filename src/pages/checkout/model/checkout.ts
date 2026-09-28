@@ -282,15 +282,17 @@ export function calcPaymentBreakdown({
   shippingFee,
   useProtection,
   useCoins,
-  usePlatformVoucher,
   storeVoucherDiscount,
+  platformShippingDiscount = 0,
+  platformDiscountAmount = 0,
 }: {
   groups: CheckoutStoreGroup[]
   shippingFee: number
   useProtection: boolean
   useCoins: boolean
-  usePlatformVoucher: boolean
   storeVoucherDiscount?: number
+  platformShippingDiscount?: number
+  platformDiscountAmount?: number
 }): PaymentBreakdown {
   const orderSubtotal = calcOriginalSubtotal(groups)
   const productProtection = useProtection ? 10_000 : 0
@@ -298,14 +300,13 @@ export function calcPaymentBreakdown({
   const serviceFee = 2000
   const currentSubtotal = calcOrderSubtotal(groups)
   const productDiscount = Math.max(0, orderSubtotal - currentSubtotal)
-  const shippingDiscount = shippingSubtotal > 0 ? 8000 : 0
+  const shippingDiscount = platformShippingDiscount
   const resolvedStoreVoucherDiscount =
     storeVoucherDiscount ??
     groups.reduce((sum, group) => sum + (group.voucherDiscount ?? 0), 0)
-  const platformVoucherDiscount = usePlatformVoucher ? 12_213 : 0
   const coinDiscount = useCoins ? 30 : 0
   const voucherDiscount =
-    resolvedStoreVoucherDiscount + platformVoucherDiscount + coinDiscount
+    resolvedStoreVoucherDiscount + platformDiscountAmount + coinDiscount
   const paymentDiscount = 2000
 
   const total = Math.max(

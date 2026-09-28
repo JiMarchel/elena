@@ -10,11 +10,13 @@ import { RequireAuth } from '@/shared/auth'
 import { Button, Input, Switch } from '@/shared/ui'
 
 import {
+  addressFlowSearch,
   buildRegionLabel,
-  checkoutFlowSearch,
   draftToSavedAddress,
   getAddressById,
+  getAddressListTarget,
   isAddressFormValid,
+  isSettingsAddressFlow,
   savedAddressToDraft,
   setSelectedAddress,
   upsertAddress,
@@ -45,7 +47,9 @@ function AddressFormPageContent() {
   const { addressId, ...flowSearch } = useSearch({
     from: '/_app/checkout/addresses/new',
   })
-  const checkoutSearch = checkoutFlowSearch(flowSearch)
+  const addressSearch = addressFlowSearch(flowSearch)
+  const fromSettings = isSettingsAddressFlow(flowSearch)
+  const addressListTarget = getAddressListTarget(flowSearch)
   const isEditing = Boolean(addressId)
 
   const initialDraft = useMemo(() => {
@@ -79,7 +83,7 @@ function AddressFormPageContent() {
     navigate({
       to: '/checkout/addresses/location',
       search: {
-        ...checkoutSearch,
+        ...addressSearch,
         ...(addressId ? { addressId } : {}),
       },
     })
@@ -93,7 +97,12 @@ function AddressFormPageContent() {
     setSelectedAddress(saved.id)
     writeFormDraft(null)
 
-    navigate({ to: '/checkout', search: checkoutSearch })
+    if (fromSettings) {
+      navigate(addressListTarget)
+      return
+    }
+
+    navigate({ to: '/checkout', search: addressSearch })
   }
 
   return (
@@ -105,8 +114,8 @@ function AddressFormPageContent() {
           className="-ml-1 shrink-0"
           render={
             <Link
-              to="/checkout/addresses"
-              search={checkoutSearch}
+              to={addressListTarget.to}
+              search={addressListTarget.search}
             />
           }
           aria-label="Kembali"
