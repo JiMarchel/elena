@@ -1,0 +1,17 @@
+/** Route internal member area — dipakai navigasi dan link antar halaman. */
+export type AppRoutePath =
+  | '/'
+  | '/shop'
+  | '/cart'
+  | '/orders'
+  | '/vouchers'
+  | '/network'
+  | '/network/genealogy'
+  | '/network/referral'
+  | '/earnings'
+  | '/earnings/pairing'
+  | '/earnings/sponsor'
+  | '/earnings/rewards'
+  | '/wallet'
+  | '/wallet/withdraw'
+  | '/settings'

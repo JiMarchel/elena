@@ -1,69 +1,70 @@
 import type { LucideIcon } from 'lucide-react'
 import {
-  ChartBarIcon,
-  CoinsIcon,
   GiftIcon,
+  HandCoinsIcon,
   NetworkIcon,
   Share2Icon,
   ShoppingBagIcon,
+  SparklesIcon,
+  StoreIcon,
   TicketIcon,
-  TrendingUpIcon,
   WalletIcon,
 } from 'lucide-react'
+
+import type { AppRoutePath } from '@/shared/config/app-routes'
 
 export type DashboardShortcut = {
   id: string
   title: string
   description: string
   icon: LucideIcon
-  /** Route nyata atau '#' kalau belum ada halaman. */
-  url: string
+  url: AppRoutePath
   badge?: string
 }
 
+/** Shortcut beranda — selaras dengan grup navigasi sidebar. */
 export const dashboardShortcuts: DashboardShortcut[] = [
   {
-    id: 'stats',
-    title: 'Statistik',
-    description: 'Ringkasan performa Anda',
-    icon: ChartBarIcon,
-    url: '#',
+    id: 'shop',
+    title: 'Belanja',
+    description: 'Katalog parfum',
+    icon: StoreIcon,
+    url: '/shop',
   },
   {
     id: 'network',
     title: 'Jaringan',
-    description: 'Downline & referral',
+    description: 'Binary tree downline',
     icon: NetworkIcon,
     url: '/network',
   },
   {
-    id: 'points',
-    title: 'Poin',
-    description: 'Tukar reward Enela',
-    icon: CoinsIcon,
-    url: '#',
-    badge: 'Baru',
+    id: 'referral',
+    title: 'Referral',
+    description: 'Referral Center',
+    icon: Share2Icon,
+    url: '/network/referral',
   },
   {
-    id: 'analytics',
-    title: 'Analitik',
-    description: 'Trend penjualan',
-    icon: TrendingUpIcon,
-    url: '#',
+    id: 'earnings',
+    title: 'Bonus',
+    description: 'Bonus Center',
+    icon: HandCoinsIcon,
+    url: '/earnings',
+  },
+  {
+    id: 'pairing',
+    title: 'Pairing',
+    description: 'PV kiri & kanan',
+    icon: SparklesIcon,
+    url: '/earnings/pairing',
   },
   {
     id: 'income',
-    title: 'Pendapatan',
-    description: 'Komisi marketing',
+    title: 'Dompet',
+    description: 'Saldo & riwayat',
     icon: WalletIcon,
-    url: '#',
-  },
-  {
-    id: 'referral',
-    title: 'Referral',
-    description: 'Bagikan kode Anda',
-    icon: Share2Icon,
-    url: '#',
+    url: '/wallet',
   },
   {
     id: 'orders',
@@ -82,8 +83,8 @@ export const dashboardShortcuts: DashboardShortcut[] = [
   {
     id: 'rewards',
     title: 'Hadiah',
-    description: 'Mission & bonus',
+    description: 'Milestone reward',
     icon: GiftIcon,
-    url: '#',
+    url: '/earnings/rewards',
   },
 ]

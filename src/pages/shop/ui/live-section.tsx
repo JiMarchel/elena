@@ -2,7 +2,7 @@ import { ChevronRightIcon, PlayIcon } from 'lucide-react'
 
 import { Badge } from '@/shared/ui'
 
-import { liveStreams, videoClips } from '../model/dashboard-promo'
+import { liveStreams, videoClips } from '../model/shop-promo'
 
 export function LiveSection() {
   return (

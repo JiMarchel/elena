@@ -39,7 +39,7 @@ export function NetworkPage() {
 
 function NetworkPageContent() {
   const navigate = useNavigate()
-  const { rootId } = useSearch({ from: '/_app/network' })
+  const { rootId } = useSearch({ from: '/_app/network/' })
   const [jumpQuery, setJumpQuery] = useState('')
   const [jumpError, setJumpError] = useState<string | null>(null)
   const [tab, setTab] = useState('tree')

@@ -14,20 +14,32 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppCartRouteImport } from './routes/_app.cart'
 import { Route as AppCheckoutRouteImport } from './routes/_app.checkout'
+import { Route as AppEarningsRouteImport } from './routes/_app.earnings'
 import { Route as AppNetworkRouteImport } from './routes/_app.network'
 import { Route as AppOrdersRouteImport } from './routes/_app.orders'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
+import { Route as AppShopRouteImport } from './routes/_app.shop'
 import { Route as AppVouchersRouteImport } from './routes/_app.vouchers'
+import { Route as AppWalletRouteImport } from './routes/_app.wallet'
 import { Route as AuthLoginRouteImport } from './routes/_auth.login'
 import { Route as AuthRegisterRouteImport } from './routes/_auth.register'
 import { Route as AppCheckoutIndexRouteImport } from './routes/_app.checkout.index'
 import { Route as AppCheckoutAddressesRouteImport } from './routes/_app.checkout.addresses'
 import { Route as AppCheckoutResultRouteImport } from './routes/_app.checkout.result'
 import { Route as AppCheckoutVouchersRouteImport } from './routes/_app.checkout.vouchers'
+import { Route as AppEarningsIndexRouteImport } from './routes/_app.earnings.index'
+import { Route as AppEarningsPairingRouteImport } from './routes/_app.earnings.pairing'
+import { Route as AppEarningsRewardsRouteImport } from './routes/_app.earnings.rewards'
+import { Route as AppEarningsSponsorRouteImport } from './routes/_app.earnings.sponsor'
+import { Route as AppNetworkIndexRouteImport } from './routes/_app.network.index'
+import { Route as AppNetworkGenealogyRouteImport } from './routes/_app.network.genealogy'
+import { Route as AppNetworkReferralRouteImport } from './routes/_app.network.referral'
 import { Route as AppProductsProductIdRouteImport } from './routes/_app.products.$productId'
 import { Route as AppSettingsIndexRouteImport } from './routes/_app.settings.index'
 import { Route as AppSettingsAccountSecurityRouteImport } from './routes/_app.settings.account-security'
 import { Route as AppSettingsProfileRouteImport } from './routes/_app.settings.profile'
+import { Route as AppWalletIndexRouteImport } from './routes/_app.wallet.index'
+import { Route as AppWalletWithdrawRouteImport } from './routes/_app.wallet.withdraw'
 import { Route as AppCheckoutAddressesIndexRouteImport } from './routes/_app.checkout.addresses.index'
 import { Route as AppCheckoutAddressesLocationRouteImport } from './routes/_app.checkout.addresses.location'
 import { Route as AppCheckoutAddressesNewRouteImport } from './routes/_app.checkout.addresses.new'
@@ -58,6 +70,11 @@ const AppCheckoutRoute = AppCheckoutRouteImport.update({
   path: '/checkout',
   getParentRoute: () => AppRoute,
 } as any)
+const AppEarningsRoute = AppEarningsRouteImport.update({
+  id: '/earnings',
+  path: '/earnings',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppNetworkRoute = AppNetworkRouteImport.update({
   id: '/network',
   path: '/network',
@@ -73,9 +90,19 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
+const AppShopRoute = AppShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppVouchersRoute = AppVouchersRouteImport.update({
   id: '/vouchers',
   path: '/vouchers',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWalletRoute = AppWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
   getParentRoute: () => AppRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
@@ -108,6 +135,41 @@ const AppCheckoutVouchersRoute = AppCheckoutVouchersRouteImport.update({
   path: '/vouchers',
   getParentRoute: () => AppCheckoutRoute,
 } as any)
+const AppEarningsIndexRoute = AppEarningsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppEarningsRoute,
+} as any)
+const AppEarningsPairingRoute = AppEarningsPairingRouteImport.update({
+  id: '/pairing',
+  path: '/pairing',
+  getParentRoute: () => AppEarningsRoute,
+} as any)
+const AppEarningsRewardsRoute = AppEarningsRewardsRouteImport.update({
+  id: '/rewards',
+  path: '/rewards',
+  getParentRoute: () => AppEarningsRoute,
+} as any)
+const AppEarningsSponsorRoute = AppEarningsSponsorRouteImport.update({
+  id: '/sponsor',
+  path: '/sponsor',
+  getParentRoute: () => AppEarningsRoute,
+} as any)
+const AppNetworkIndexRoute = AppNetworkIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppNetworkRoute,
+} as any)
+const AppNetworkGenealogyRoute = AppNetworkGenealogyRouteImport.update({
+  id: '/genealogy',
+  path: '/genealogy',
+  getParentRoute: () => AppNetworkRoute,
+} as any)
+const AppNetworkReferralRoute = AppNetworkReferralRouteImport.update({
+  id: '/referral',
+  path: '/referral',
+  getParentRoute: () => AppNetworkRoute,
+} as any)
 const AppProductsProductIdRoute = AppProductsProductIdRouteImport.update({
   id: '/products/$productId',
   path: '/products/$productId',
@@ -128,6 +190,16 @@ const AppSettingsProfileRoute = AppSettingsProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
   getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppWalletIndexRoute = AppWalletIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppWalletRoute,
+} as any)
+const AppWalletWithdrawRoute = AppWalletWithdrawRouteImport.update({
+  id: '/withdraw',
+  path: '/withdraw',
+  getParentRoute: () => AppWalletRoute,
 } as any)
 const AppCheckoutAddressesIndexRoute =
   AppCheckoutAddressesIndexRouteImport.update({
@@ -167,20 +239,32 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/cart': typeof AppCartRoute
   '/checkout': typeof AppCheckoutRouteWithChildren
-  '/network': typeof AppNetworkRoute
+  '/earnings': typeof AppEarningsRouteWithChildren
+  '/network': typeof AppNetworkRouteWithChildren
   '/orders': typeof AppOrdersRoute
   '/settings': typeof AppSettingsRouteWithChildren
+  '/shop': typeof AppShopRoute
   '/vouchers': typeof AppVouchersRoute
+  '/wallet': typeof AppWalletRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/checkout/addresses': typeof AppCheckoutAddressesRouteWithChildren
   '/checkout/result': typeof AppCheckoutResultRoute
   '/checkout/vouchers': typeof AppCheckoutVouchersRoute
+  '/earnings/pairing': typeof AppEarningsPairingRoute
+  '/earnings/rewards': typeof AppEarningsRewardsRoute
+  '/earnings/sponsor': typeof AppEarningsSponsorRoute
+  '/network/genealogy': typeof AppNetworkGenealogyRoute
+  '/network/referral': typeof AppNetworkReferralRoute
   '/products/$productId': typeof AppProductsProductIdRoute
   '/settings/account-security': typeof AppSettingsAccountSecurityRoute
   '/settings/profile': typeof AppSettingsProfileRouteWithChildren
+  '/wallet/withdraw': typeof AppWalletWithdrawRoute
   '/checkout/': typeof AppCheckoutIndexRoute
+  '/earnings/': typeof AppEarningsIndexRoute
+  '/network/': typeof AppNetworkIndexRoute
   '/settings/': typeof AppSettingsIndexRoute
+  '/wallet/': typeof AppWalletIndexRoute
   '/checkout/addresses/location': typeof AppCheckoutAddressesLocationRoute
   '/checkout/addresses/new': typeof AppCheckoutAddressesNewRoute
   '/settings/profile/bio': typeof AppSettingsProfileBioRoute
@@ -191,17 +275,26 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/cart': typeof AppCartRoute
-  '/network': typeof AppNetworkRoute
   '/orders': typeof AppOrdersRoute
+  '/shop': typeof AppShopRoute
   '/vouchers': typeof AppVouchersRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/checkout/result': typeof AppCheckoutResultRoute
   '/checkout/vouchers': typeof AppCheckoutVouchersRoute
+  '/earnings/pairing': typeof AppEarningsPairingRoute
+  '/earnings/rewards': typeof AppEarningsRewardsRoute
+  '/earnings/sponsor': typeof AppEarningsSponsorRoute
+  '/network/genealogy': typeof AppNetworkGenealogyRoute
+  '/network/referral': typeof AppNetworkReferralRoute
   '/products/$productId': typeof AppProductsProductIdRoute
   '/settings/account-security': typeof AppSettingsAccountSecurityRoute
+  '/wallet/withdraw': typeof AppWalletWithdrawRoute
   '/checkout': typeof AppCheckoutIndexRoute
+  '/earnings': typeof AppEarningsIndexRoute
+  '/network': typeof AppNetworkIndexRoute
   '/settings': typeof AppSettingsIndexRoute
+  '/wallet': typeof AppWalletIndexRoute
   '/checkout/addresses/location': typeof AppCheckoutAddressesLocationRoute
   '/checkout/addresses/new': typeof AppCheckoutAddressesNewRoute
   '/settings/profile/bio': typeof AppSettingsProfileBioRoute
@@ -215,21 +308,33 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_app/cart': typeof AppCartRoute
   '/_app/checkout': typeof AppCheckoutRouteWithChildren
-  '/_app/network': typeof AppNetworkRoute
+  '/_app/earnings': typeof AppEarningsRouteWithChildren
+  '/_app/network': typeof AppNetworkRouteWithChildren
   '/_app/orders': typeof AppOrdersRoute
   '/_app/settings': typeof AppSettingsRouteWithChildren
+  '/_app/shop': typeof AppShopRoute
   '/_app/vouchers': typeof AppVouchersRoute
+  '/_app/wallet': typeof AppWalletRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/_app/': typeof AppIndexRoute
   '/_app/checkout/addresses': typeof AppCheckoutAddressesRouteWithChildren
   '/_app/checkout/result': typeof AppCheckoutResultRoute
   '/_app/checkout/vouchers': typeof AppCheckoutVouchersRoute
+  '/_app/earnings/pairing': typeof AppEarningsPairingRoute
+  '/_app/earnings/rewards': typeof AppEarningsRewardsRoute
+  '/_app/earnings/sponsor': typeof AppEarningsSponsorRoute
+  '/_app/network/genealogy': typeof AppNetworkGenealogyRoute
+  '/_app/network/referral': typeof AppNetworkReferralRoute
   '/_app/products/$productId': typeof AppProductsProductIdRoute
   '/_app/settings/account-security': typeof AppSettingsAccountSecurityRoute
   '/_app/settings/profile': typeof AppSettingsProfileRouteWithChildren
+  '/_app/wallet/withdraw': typeof AppWalletWithdrawRoute
   '/_app/checkout/': typeof AppCheckoutIndexRoute
+  '/_app/earnings/': typeof AppEarningsIndexRoute
+  '/_app/network/': typeof AppNetworkIndexRoute
   '/_app/settings/': typeof AppSettingsIndexRoute
+  '/_app/wallet/': typeof AppWalletIndexRoute
   '/_app/checkout/addresses/location': typeof AppCheckoutAddressesLocationRoute
   '/_app/checkout/addresses/new': typeof AppCheckoutAddressesNewRoute
   '/_app/settings/profile/bio': typeof AppSettingsProfileBioRoute
@@ -243,20 +348,32 @@ export interface FileRouteTypes {
     | '/'
     | '/cart'
     | '/checkout'
+    | '/earnings'
     | '/network'
     | '/orders'
     | '/settings'
+    | '/shop'
     | '/vouchers'
+    | '/wallet'
     | '/login'
     | '/register'
     | '/checkout/addresses'
     | '/checkout/result'
     | '/checkout/vouchers'
+    | '/earnings/pairing'
+    | '/earnings/rewards'
+    | '/earnings/sponsor'
+    | '/network/genealogy'
+    | '/network/referral'
     | '/products/$productId'
     | '/settings/account-security'
     | '/settings/profile'
+    | '/wallet/withdraw'
     | '/checkout/'
+    | '/earnings/'
+    | '/network/'
     | '/settings/'
+    | '/wallet/'
     | '/checkout/addresses/location'
     | '/checkout/addresses/new'
     | '/settings/profile/bio'
@@ -267,17 +384,26 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/cart'
-    | '/network'
     | '/orders'
+    | '/shop'
     | '/vouchers'
     | '/login'
     | '/register'
     | '/checkout/result'
     | '/checkout/vouchers'
+    | '/earnings/pairing'
+    | '/earnings/rewards'
+    | '/earnings/sponsor'
+    | '/network/genealogy'
+    | '/network/referral'
     | '/products/$productId'
     | '/settings/account-security'
+    | '/wallet/withdraw'
     | '/checkout'
+    | '/earnings'
+    | '/network'
     | '/settings'
+    | '/wallet'
     | '/checkout/addresses/location'
     | '/checkout/addresses/new'
     | '/settings/profile/bio'
@@ -290,21 +416,33 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_app/cart'
     | '/_app/checkout'
+    | '/_app/earnings'
     | '/_app/network'
     | '/_app/orders'
     | '/_app/settings'
+    | '/_app/shop'
     | '/_app/vouchers'
+    | '/_app/wallet'
     | '/_auth/login'
     | '/_auth/register'
     | '/_app/'
     | '/_app/checkout/addresses'
     | '/_app/checkout/result'
     | '/_app/checkout/vouchers'
+    | '/_app/earnings/pairing'
+    | '/_app/earnings/rewards'
+    | '/_app/earnings/sponsor'
+    | '/_app/network/genealogy'
+    | '/_app/network/referral'
     | '/_app/products/$productId'
     | '/_app/settings/account-security'
     | '/_app/settings/profile'
+    | '/_app/wallet/withdraw'
     | '/_app/checkout/'
+    | '/_app/earnings/'
+    | '/_app/network/'
     | '/_app/settings/'
+    | '/_app/wallet/'
     | '/_app/checkout/addresses/location'
     | '/_app/checkout/addresses/new'
     | '/_app/settings/profile/bio'
@@ -355,6 +493,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCheckoutRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/earnings': {
+      id: '/_app/earnings'
+      path: '/earnings'
+      fullPath: '/earnings'
+      preLoaderRoute: typeof AppEarningsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/network': {
       id: '/_app/network'
       path: '/network'
@@ -376,11 +521,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/shop': {
+      id: '/_app/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof AppShopRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/vouchers': {
       id: '/_app/vouchers'
       path: '/vouchers'
       fullPath: '/vouchers'
       preLoaderRoute: typeof AppVouchersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/wallet': {
+      id: '/_app/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof AppWalletRouteImport
       parentRoute: typeof AppRoute
     }
     '/_auth/login': {
@@ -425,6 +584,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCheckoutVouchersRouteImport
       parentRoute: typeof AppCheckoutRoute
     }
+    '/_app/earnings/': {
+      id: '/_app/earnings/'
+      path: '/'
+      fullPath: '/earnings/'
+      preLoaderRoute: typeof AppEarningsIndexRouteImport
+      parentRoute: typeof AppEarningsRoute
+    }
+    '/_app/earnings/pairing': {
+      id: '/_app/earnings/pairing'
+      path: '/pairing'
+      fullPath: '/earnings/pairing'
+      preLoaderRoute: typeof AppEarningsPairingRouteImport
+      parentRoute: typeof AppEarningsRoute
+    }
+    '/_app/earnings/rewards': {
+      id: '/_app/earnings/rewards'
+      path: '/rewards'
+      fullPath: '/earnings/rewards'
+      preLoaderRoute: typeof AppEarningsRewardsRouteImport
+      parentRoute: typeof AppEarningsRoute
+    }
+    '/_app/earnings/sponsor': {
+      id: '/_app/earnings/sponsor'
+      path: '/sponsor'
+      fullPath: '/earnings/sponsor'
+      preLoaderRoute: typeof AppEarningsSponsorRouteImport
+      parentRoute: typeof AppEarningsRoute
+    }
+    '/_app/network/': {
+      id: '/_app/network/'
+      path: '/'
+      fullPath: '/network/'
+      preLoaderRoute: typeof AppNetworkIndexRouteImport
+      parentRoute: typeof AppNetworkRoute
+    }
+    '/_app/network/genealogy': {
+      id: '/_app/network/genealogy'
+      path: '/genealogy'
+      fullPath: '/network/genealogy'
+      preLoaderRoute: typeof AppNetworkGenealogyRouteImport
+      parentRoute: typeof AppNetworkRoute
+    }
+    '/_app/network/referral': {
+      id: '/_app/network/referral'
+      path: '/referral'
+      fullPath: '/network/referral'
+      preLoaderRoute: typeof AppNetworkReferralRouteImport
+      parentRoute: typeof AppNetworkRoute
+    }
     '/_app/products/$productId': {
       id: '/_app/products/$productId'
       path: '/products/$productId'
@@ -452,6 +660,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/profile'
       preLoaderRoute: typeof AppSettingsProfileRouteImport
       parentRoute: typeof AppSettingsRoute
+    }
+    '/_app/wallet/': {
+      id: '/_app/wallet/'
+      path: '/'
+      fullPath: '/wallet/'
+      preLoaderRoute: typeof AppWalletIndexRouteImport
+      parentRoute: typeof AppWalletRoute
+    }
+    '/_app/wallet/withdraw': {
+      id: '/_app/wallet/withdraw'
+      path: '/withdraw'
+      fullPath: '/wallet/withdraw'
+      preLoaderRoute: typeof AppWalletWithdrawRouteImport
+      parentRoute: typeof AppWalletRoute
     }
     '/_app/checkout/addresses/': {
       id: '/_app/checkout/addresses/'
@@ -531,6 +753,40 @@ const AppCheckoutRouteWithChildren = AppCheckoutRoute._addFileChildren(
   AppCheckoutRouteChildren,
 )
 
+interface AppEarningsRouteChildren {
+  AppEarningsPairingRoute: typeof AppEarningsPairingRoute
+  AppEarningsRewardsRoute: typeof AppEarningsRewardsRoute
+  AppEarningsSponsorRoute: typeof AppEarningsSponsorRoute
+  AppEarningsIndexRoute: typeof AppEarningsIndexRoute
+}
+
+const AppEarningsRouteChildren: AppEarningsRouteChildren = {
+  AppEarningsPairingRoute: AppEarningsPairingRoute,
+  AppEarningsRewardsRoute: AppEarningsRewardsRoute,
+  AppEarningsSponsorRoute: AppEarningsSponsorRoute,
+  AppEarningsIndexRoute: AppEarningsIndexRoute,
+}
+
+const AppEarningsRouteWithChildren = AppEarningsRoute._addFileChildren(
+  AppEarningsRouteChildren,
+)
+
+interface AppNetworkRouteChildren {
+  AppNetworkGenealogyRoute: typeof AppNetworkGenealogyRoute
+  AppNetworkReferralRoute: typeof AppNetworkReferralRoute
+  AppNetworkIndexRoute: typeof AppNetworkIndexRoute
+}
+
+const AppNetworkRouteChildren: AppNetworkRouteChildren = {
+  AppNetworkGenealogyRoute: AppNetworkGenealogyRoute,
+  AppNetworkReferralRoute: AppNetworkReferralRoute,
+  AppNetworkIndexRoute: AppNetworkIndexRoute,
+}
+
+const AppNetworkRouteWithChildren = AppNetworkRoute._addFileChildren(
+  AppNetworkRouteChildren,
+)
+
 interface AppSettingsProfileRouteChildren {
   AppSettingsProfileBioRoute: typeof AppSettingsProfileBioRoute
   AppSettingsProfileGenderRoute: typeof AppSettingsProfileGenderRoute
@@ -562,13 +818,30 @@ const AppSettingsRouteWithChildren = AppSettingsRoute._addFileChildren(
   AppSettingsRouteChildren,
 )
 
+interface AppWalletRouteChildren {
+  AppWalletWithdrawRoute: typeof AppWalletWithdrawRoute
+  AppWalletIndexRoute: typeof AppWalletIndexRoute
+}
+
+const AppWalletRouteChildren: AppWalletRouteChildren = {
+  AppWalletWithdrawRoute: AppWalletWithdrawRoute,
+  AppWalletIndexRoute: AppWalletIndexRoute,
+}
+
+const AppWalletRouteWithChildren = AppWalletRoute._addFileChildren(
+  AppWalletRouteChildren,
+)
+
 interface AppRouteChildren {
   AppCartRoute: typeof AppCartRoute
   AppCheckoutRoute: typeof AppCheckoutRouteWithChildren
-  AppNetworkRoute: typeof AppNetworkRoute
+  AppEarningsRoute: typeof AppEarningsRouteWithChildren
+  AppNetworkRoute: typeof AppNetworkRouteWithChildren
   AppOrdersRoute: typeof AppOrdersRoute
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
+  AppShopRoute: typeof AppShopRoute
   AppVouchersRoute: typeof AppVouchersRoute
+  AppWalletRoute: typeof AppWalletRouteWithChildren
   AppIndexRoute: typeof AppIndexRoute
   AppProductsProductIdRoute: typeof AppProductsProductIdRoute
 }
@@ -576,10 +849,13 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppCartRoute: AppCartRoute,
   AppCheckoutRoute: AppCheckoutRouteWithChildren,
-  AppNetworkRoute: AppNetworkRoute,
+  AppEarningsRoute: AppEarningsRouteWithChildren,
+  AppNetworkRoute: AppNetworkRouteWithChildren,
   AppOrdersRoute: AppOrdersRoute,
   AppSettingsRoute: AppSettingsRouteWithChildren,
+  AppShopRoute: AppShopRoute,
   AppVouchersRoute: AppVouchersRoute,
+  AppWalletRoute: AppWalletRouteWithChildren,
   AppIndexRoute: AppIndexRoute,
   AppProductsProductIdRoute: AppProductsProductIdRoute,
 }

@@ -5,7 +5,7 @@ import { useAuth } from '@/shared/auth'
 import { formatIDR } from '@/shared/lib'
 import { Button, Separator } from '@/shared/ui'
 
-import type { WalletSnapshot } from '../model/dashboard-wallet'
+import type { WalletSnapshot } from '../model/shop-wallet'
 
 export function WalletStrip({ wallet }: { wallet: WalletSnapshot }) {
   const { isAuthenticated } = useAuth()
@@ -50,7 +50,7 @@ export function WalletStrip({ wallet }: { wallet: WalletSnapshot }) {
     <section className="min-w-0 overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
       <div className="grid min-w-0 grid-cols-3 divide-x divide-border">
         <Link
-          to="/vouchers"
+          to="/wallet"
           className="flex min-w-0 flex-col gap-1 px-2 py-2.5 transition-colors hover:bg-muted/50 sm:px-4 sm:py-3"
         >
           <div className="flex items-center gap-1.5 text-muted-foreground">

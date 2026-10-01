@@ -1,8 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-
-import { NetworkPage, validateNetworkSearch } from '@/pages/network'
+import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app/network')({
-  component: NetworkPage,
-  validateSearch: validateNetworkSearch,
+  component: () => <Outlet />,
 })

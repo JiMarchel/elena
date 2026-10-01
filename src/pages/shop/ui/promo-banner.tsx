@@ -1,6 +1,6 @@
 import { Button } from '@/shared/ui'
 
-import { promoBanners } from '../model/dashboard-promo'
+import { promoBanners } from '../model/shop-promo'
 
 export function PromoBannerSection() {
   return (

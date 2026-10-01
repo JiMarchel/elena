@@ -1,16 +1,12 @@
 import { Link, useRouterState } from '@tanstack/react-router'
-import {
-  ChartBarIcon,
-  LayoutDashboardIcon,
-  NetworkIcon,
-  SettingsIcon,
-  ShoppingBagIcon,
-  ShoppingCartIcon,
-  StarIcon,
-  TicketIcon,
-  UsersIcon,
-} from 'lucide-react'
+import { SettingsIcon } from 'lucide-react'
 
+import {
+  appNavGroups,
+  isAppRoutePath,
+  isNavActive,
+} from '@/app/layouts/app-nav'
+import type { AppRoutePath } from '@/shared/config/app-routes'
 import {
   Sidebar,
   SidebarContent,
@@ -24,53 +20,10 @@ import {
   SidebarRail,
 } from '@/shared/ui'
 
-const nav = [
-  {
-    label: 'Katalog',
-    items: [
-      { title: 'Dashboard', url: '/', icon: LayoutDashboardIcon },
-      { title: 'Keranjang Saya', url: '/cart', icon: ShoppingCartIcon },
-      { title: 'Voucher Saya', url: '/vouchers', icon: TicketIcon },
-      { title: 'Pesanan Saya', url: '/orders', icon: ShoppingBagIcon },
-      { title: 'Ulasan', url: '#', icon: StarIcon },
-    ],
-  },
-  {
-    label: 'Penjualan',
-    items: [
-      { title: 'Pelanggan', url: '#', icon: UsersIcon },
-      { title: 'Analitik', url: '#', icon: ChartBarIcon },
-    ],
-  },
-  {
-    label: 'Jaringan',
-    items: [{ title: 'Jaringan Saya', url: '/network', icon: NetworkIcon }],
-  },
-  {
-    label: 'Lainnya',
-    items: [{ title: 'Pengaturan', url: '/settings', icon: SettingsIcon }],
-  },
-]
-
-const routed = (
-  url: string,
-): url is
-  | '/'
-  | '/network'
-  | '/cart'
-  | '/vouchers'
-  | '/orders'
-  | '/settings' =>
-  url === '/' ||
-  url === '/network' ||
-  url === '/cart' ||
-  url === '/vouchers' ||
-  url === '/orders' ||
-  url === '/settings'
-
-const isNavActive = (pathname: string, url: string) => {
-  if (url === '/') return pathname === '/'
-  return pathname === url || pathname.startsWith(`${url}/`)
+const settingsNav = {
+  title: 'Pengaturan',
+  url: '/settings' as const satisfies AppRoutePath,
+  icon: SettingsIcon,
 }
 
 export function AppSidebar() {
@@ -92,7 +45,7 @@ export function AppSidebar() {
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">Enela</span>
                 <span className="truncate text-xs text-muted-foreground">
-                  Parfum Marketplace
+                  Affiliate Program
                 </span>
               </div>
             </SidebarMenuButton>
@@ -100,23 +53,17 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {nav.map((group) => (
-          <SidebarGroup key={group.label}>
+        {appNavGroups.map((group) => (
+          <SidebarGroup key={group.id}>
             <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {group.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
+                  <SidebarMenuItem key={item.url}>
                     <SidebarMenuButton
                       tooltip={item.title}
                       isActive={isNavActive(pathname, item.url)}
-                      render={
-                        routed(item.url) ? (
-                          <Link to={item.url} />
-                        ) : (
-                          <a href={item.url} />
-                        )
-                      }
+                      render={<Link to={item.url} />}
                     >
                       <item.icon />
                       <span>{item.title}</span>
@@ -127,8 +74,28 @@ export function AppSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
+        <SidebarGroup>
+          <SidebarGroupLabel>Akun</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip={settingsNav.title}
+                  isActive={isNavActive(pathname, settingsNav.url)}
+                  render={<Link to={settingsNav.url} />}
+                >
+                  <settingsNav.icon />
+                  <span>{settingsNav.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
   )
 }
+
+// Dipertahankan untuk kompatibilitas jika dipakai di tempat lain.
+export { isAppRoutePath, isNavActive }
