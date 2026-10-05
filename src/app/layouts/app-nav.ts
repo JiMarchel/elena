@@ -3,6 +3,7 @@ import {
   ArrowDownToLineIcon,
   GiftIcon,
   HandCoinsIcon,
+  HomeIcon,
   LayoutDashboardIcon,
   NetworkIcon,
   Share2Icon,
@@ -39,7 +40,8 @@ export const appNavGroups: AppNavGroup[] = [
     id: 'home',
     label: 'Utama',
     items: [
-      { title: 'Beranda', url: '/', icon: LayoutDashboardIcon },
+      { title: 'Beranda', url: '/', icon: HomeIcon },
+      { title: 'Dashboard Affiliate', url: '/dashboard', icon: LayoutDashboardIcon },
     ],
   },
   {

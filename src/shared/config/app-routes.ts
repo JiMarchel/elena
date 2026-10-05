@@ -1,6 +1,7 @@
 /** Route internal member area — dipakai navigasi dan link antar halaman. */
 export type AppRoutePath =
   | '/'
+  | '/dashboard'
   | '/shop'
   | '/cart'
   | '/orders'
